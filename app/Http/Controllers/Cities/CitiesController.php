@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Cities;
 
-use App\Models\User;
+
 use App\Models\Cities;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

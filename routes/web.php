@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Cities\CitiesController;
+use App\Http\Controllers\Reader\ReaderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,5 @@ Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout
 // Route::get('/delete-city/{id}', [CitiesController::class, 'deleteCity'])->name('deleteCity');
 
 Route::resource('/cities', CitiesController::class);
+
+Route::resource('/reader', ReaderController::class);
