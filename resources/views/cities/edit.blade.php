@@ -6,19 +6,19 @@
     <hr />
     <form action="{{ route('cities.update', $model->id) }}" method="POST">
         @csrf
-        @method('PUT')
+        @method('POST')
         <div class="row">
+        <div class="col mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" name="country" id="country" class="form-control" placeholder="Country" value="{{ $model->countries->name }}" autocomplete="off">
+        </div>
             <div class="col mb-3">
-                <label class="form-label">Country</label>
-                <input type="text" name="country" class="form-control" placeholder="Country" value="{{ $model->country }}" >
+                <label for="city" class="form-label">City</label>
+                <input type="text" name="city" id="city" class="form-control" placeholder="City" value="{{ $model->city }}" autocomplete="off">
             </div>
             <div class="col mb-3">
-                <label class="form-label">City</label>
-                <input type="text" name="city" class="form-control" placeholder="City" value="{{ $model->city }}" >
-            </div>
-            <div class="col mb-3">
-                <label class="form-label">Population</label>
-                <input type="text" name="population" class="form-control" placeholder="Population" value="{{ $model->population }}" >
+                <label for="population" class="form-label">Population</label>
+                <input type="text" name="population" id="population" class="form-control" placeholder="Population" value="{{ $model->population }}" autocomplete="off">
             </div>
         </div>
         <div class="row">

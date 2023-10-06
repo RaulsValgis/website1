@@ -13,10 +13,17 @@ return new class extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('country')->nullable()->index();
+            $table->integer('country_id')->unsigned()->index();
             $table->string('city', 100)->nullable();
             $table->integer('population')->unsigned()->nullable();
             $table->timestamps();
+
+            // Foreign key constraint
+            $table->foreign('country_id')
+                  ->references('id')
+                  ->on('countries')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
         });
     }
 
@@ -25,6 +32,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cities');
+        Schema::table('cities', function (Blueprint $table) {
+            //
+        });
     }
 };

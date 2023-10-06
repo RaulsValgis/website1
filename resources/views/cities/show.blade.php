@@ -7,15 +7,15 @@
     <div class="row">
         <div class="col mb-3">
             <label class="form-label">Country</label>
-            <input type="text" name="title" class="form-control" placeholder="Title" value="{{ $model->country }}" readonly>
+            <input type="text" name="title" class="form-control" placeholder="Country" value="{{ $model->countries->name }}" readonly>
         </div>
         <div class="col mb-3">
             <label class="form-label">City</label>
-            <input type="text" name="price" class="form-control" placeholder="Price" value="{{ $model->city }}" readonly>
+            <input type="text" name="price" class="form-control" placeholder="City" value="{{ $model->city }}" readonly>
         </div>
         <div class="col mb-3">
             <label class="form-label">Population</label>
-            <input type="text" name="product_code" class="form-control" placeholder="Product Code" value="{{ $model->copulation }}" readonly>
+            <input type="text" name="product_code" class="form-control" placeholder="Population" value="{{ $model->population }}" readonly>
         </div>
     </div>
     <div class="row">

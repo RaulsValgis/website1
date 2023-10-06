@@ -29,11 +29,24 @@ Route::post('/authenticate', [LoginRegisterController::class, 'authenticate'])->
 Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('dashboard');
 Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
 
-// Cities page
-// Route::get('/cities', [CitiesController::class, 'displayCities'])->name('cities');
-// Route::post('/add-city', [CitiesController::class, 'addCity'])->name('addCity');
-// Route::get('/delete-city/{id}', [CitiesController::class, 'deleteCity'])->name('deleteCity');
+//Route::resource('/cities', CitiesController::class);
+//Route::post('/cities/{id}', [CitiesController::class, 'postEdit'])->name('update');
 
-Route::resource('/cities', CitiesController::class);
+
+Route::get('/cities', [CitiesController::class, 'index'])->name('cities.index');
+
+Route::get('/cities/create', [CitiesController::class, 'create'])->name('cities.create');
+
+Route::post('/cities', [CitiesController::class, 'store'])->name('cities.store');
+
+Route::get('/cities/{id}', [CitiesController::class, 'show'])->name('cities.show');
+
+Route::get('/cities/{id}/edit', [CitiesController::class, 'edit'])->name('cities.edit');
+
+Route::post('/cities/{id}/update', [CitiesController::class, 'update'])->name('cities.update');
+
+Route::post('/cities/{id}/delete', [CitiesController::class, 'destroy'])->name('cities.destroy');
+
+
 
 Route::resource('/reader', ReaderController::class);

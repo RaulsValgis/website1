@@ -11,16 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('cities', function (Blueprint $table) {
-            //
+        Schema::create('countries', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->nullable()->index();
+            $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-    Schema::dropIfExists('cities');
+        Schema::table('country', function (Blueprint $table) {
+            //
+        });
     }
 };

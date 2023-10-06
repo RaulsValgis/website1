@@ -11,8 +11,8 @@
             <div class="row mb-3">
                 <div class="col">
                     Country
-                    <input type="text" name="country" class="form-control" placeholder="Country" autocomplete="country">
-                    @error('country')
+                    <input type="text" name="country_name" class="form-control" placeholder="Country" autocomplete="country">
+                    @error('country_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
