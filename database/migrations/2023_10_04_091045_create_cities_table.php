@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cities', function (Blueprint $table) {
-            $table->increments('ID');
-            $table->string('Country', 100);
-            $table->string('City', 100);
-            $table->integer('Population');
+            $table->increments('id');
+            $table->string('country')->nullable()->index();
+            $table->string('city', 100)->nullable();
+            $table->integer('population')->unsigned()->nullable();
             $table->timestamps();
         });
     }

@@ -11,12 +11,12 @@ class Cities extends Model
     use HasFactory;
 
     protected $table = 'cities';
-    protected $primaryKey = 'ID';
-    public $timestamps = false;
 
     protected $fillable = [
-        'Country',
-        'City',
-        'Population',
+        'country',
+        'city',
+        'population',
     ];
+
+    public $timestamps = true;
 }

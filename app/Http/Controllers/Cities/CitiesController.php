@@ -18,9 +18,9 @@ class CitiesController extends Controller
 
     public function index()
     {
-        $Population = cities::orderBy('population')->get();
+        $populationModel = Cities::orderBy('population')->get();
  
-        return view('cities.index', compact('Population'));
+        return view('cities.index', [ 'model' => $populationModel ]);
     }
 
     public function create()
@@ -32,16 +32,16 @@ class CitiesController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'country' => 'required|string|max:100',
-            'city' => 'required|string|max:100',
-            'population' => 'required|integer'
+            'country' => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'city' => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'population' => 'nullable|integer',
         ]);
 
         // Create a new city record
         Cities::create([
-            'Country' => $request->input('country'),
-            'City' => $request->input('city'),
-            'Population' => $request->input('population')
+            'country' => $request->input('country'),
+            'city' => $request->input('city'),
+            'population' => $request->input('population'),
         ]);
 
         return redirect()->route('cities.index')->with('success', 'City added successfully');
@@ -49,33 +49,33 @@ class CitiesController extends Controller
 
     public function show(string $id)
     {
-        $Population = cities::findOrFail($id);
+        $populationModel = cities::findOrFail($id);
  
-        return view('cities.show', compact('Population'));
+        return view('cities.show', [ 'model' => $populationModel ]);
     }
 
     public function edit(string $id)
     {
-        $Population = cities::findOrFail($id);
+        $populationModel = cities::findOrFail($id);
  
-        return view('cities.edit', compact('Population'));
+        return view('cities.edit', [ 'model' => $populationModel ]);
     }
 
     public function update(Request $request, $id)
     {
         // Validate the request data
         $request->validate([
-            'country' => 'required|string|max:100',
-            'city' => 'required|string|max:100',
-            'population' => 'required|integer'
+            'country' => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'city' => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'population' => 'nullable|integer',
         ]);
 
-        $Population = Cities::findOrFail($id);
+        $populationModel = Cities::findOrFail($id);
 
-        $Population->update([
-            'Country' => $request->input('country'),
-            'City' => $request->input('city'),
-            'Population' => $request->input('population')
+        $populationModel->update([
+            'country' => $request->input('country'),
+            'city' => $request->input('city'),
+            'population' => $request->input('population')
         ]);
 
         return redirect()->route('cities.index')->with('success', 'City updated successfully');
@@ -83,58 +83,12 @@ class CitiesController extends Controller
 
     public function destroy(string $id)
     {
-        $Population = cities::findOrFail($id);
+        $populationModel = cities::findOrFail($id);
  
-        $Population->delete();
+        $populationModel->delete();
  
         return redirect()->route('cities.index')->with('success', 'Cities deleted successfully');
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    //------------------DISPLAY----------------------
-    public function displayCities(): View 
-        {
-            $cities = DB::select('SELECT * FROM cities WHERE Population > 0');
-            
-            if (!empty($cities)) {
-                return view('cities.index', ['cities' => $cities]);
-            } else {
-                return 'No data found in the Cities table.';
-            }
-        }
-
-    //----------------------------ADD-------------------------
-    public function addCity(Request $request)
-        {
-            $data = $request->validate([
-                'country' => 'required|string|max:100',
-                'city' => 'required|string|max:100',
-                'population' => 'required|integer'
-            ]);
-
-            DB::table('cities')->insert($data);
-
-            return redirect()->route('cities')->with('success', 'City added successfully.');
-        }
-
-    //---------Delete------------------
-    public function deleteCity($id)
-        {
-
-        DB::table('cities')->where('ID', $id)->delete();
-
-        return redirect()->route('cities')->with('success', 'City deleted successfully.');
-        }
 
 }

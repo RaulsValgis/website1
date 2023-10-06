@@ -39,18 +39,18 @@
             </tr>
         </thead>
         <tbody>
-            @if($Population->count() > 0)
-                @foreach($Population as $rs)
+            @if($model->count() > 0)
+                @foreach($model as $rs)
                     <tr>
                         <td class="align-middle">{{ $loop->iteration }}</td>
-                        <td class="align-middle">{{ $rs->Country }}</td>
-                        <td class="align-middle">{{ $rs->City }}</td>
-                        <td class="align-middle">{{ $rs->Population }}</td>
+                        <td class="align-middle">{{ $rs->country }}</td>
+                        <td class="align-middle">{{ $rs->city }}</td>
+                        <td class="align-middle">{{ $rs->population }}</td>
                         <td class="align-middle">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('cities.show', $rs->ID) }}" type="button" class="btn btn-secondary">Detail</a>
-                                <a href="{{ route('cities.edit', $rs->ID)}}" type="button" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('cities.destroy', $rs->ID) }}" method="POST" type="button" class="btn btn-danger p-0" onsubmit="return confirm('Delete?')">
+                                <a href="{{ route('cities.show', $rs->id) }}" type="button" class="btn btn-secondary">Detail</a>
+                                <a href="{{ route('cities.edit', $rs->id)}}" type="button" class="btn btn-warning">Edit</a>
+                                <form action="{{ route('cities.destroy', $rs->id) }}" method="POST" type="button" class="btn btn-danger p-0" onsubmit="return confirm('Delete?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger m-0">Delete</button>

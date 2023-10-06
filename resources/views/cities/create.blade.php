@@ -12,14 +12,23 @@
                 <div class="col">
                     Country
                     <input type="text" name="country" class="form-control" placeholder="Country" autocomplete="country">
+                    @error('country')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col">
                     City
                     <input type="text" name="city" class="form-control" placeholder="City" autocomplete="address-level2">
+                    @error('city')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col">
                     Population
                     <input type="text" name="population" class="form-control" placeholder="Population" autocomplete="off">
+                    @error('population')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="row">
@@ -31,5 +40,20 @@
     </div>
 </div>
 
+@if ($errors->any())
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 
 @endsection
