@@ -85,6 +85,7 @@ return [
 
     'locale' => 'en',
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -184,5 +185,12 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
+
+
+
+    'available_locales' => [
+        'English' => 'en',
+        'Latvian' => 'lv',
+    ]
 
 ];

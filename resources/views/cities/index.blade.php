@@ -15,7 +15,7 @@
 </style>
 
 <div class="container">
-    <a href="{{ route('cities.create') }}" class="btn btn-primary">Add</a>
+    <a href="{{ route('cities.create') }}" class="btn btn-primary">{{ __('Add') }}</a>
 </div>
 
 @if(Session::has('success'))
@@ -24,15 +24,17 @@
     </div>
 @endif
 
+<!-- fix this ^ -->
+
 <div class="container">
     <table class="table table-hover">
         <thead class="table-primary">
             <tr>
                 <th>#</th>
-                <th>Country</th>
-                <th>City</th>
-                <th>Population</th>
-                <th>Action</th>
+                <th>{{ __('Country') }}</th>
+                <th>{{ __('City') }}</th>
+                <th>{{ __('Population') }}</th>
+                <th>{{ __('Action') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -45,12 +47,12 @@
                         <td class="align-middle">{{ $rs->population }}</td>
                         <td class="align-middle">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('cities.show', $rs->id) }}" type="button" class="btn btn-secondary">Detail</a>
-                                <a href="{{ route('cities.edit', $rs->id) }}" type="button" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('cities.destroy', $rs->id) }}" method="POST" class="btn btn-danger p-0" onsubmit="return confirm('Delete?')">
+                                <a href="{{ route('cities.show', $rs->id) }}" type="button" class="btn btn-secondary">{{ __('Detail') }}</a>
+                                <a href="{{ route('cities.edit', $rs->id) }}" type="button" class="btn btn-warning">{{ __('Edit') }}</a>
+                                <form action="{{ route('cities.destroy', $rs->id) }}" method="POST" class="btn btn-danger p-0" onsubmit="return confirm('{{ __('Delete') }}')">
                                     @csrf
                                     @method('POST')
-                                    <button class="btn btn-danger m-0">Delete</button>
+                                    <button class="btn btn-danger m-0">{{ __('Delete') }}</button>
                                 </form>
                             </div>
                         </td>
@@ -58,7 +60,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td class="text-center" colspan="5">No Data Found</td>
+                    <td class="text-center" colspan="5">{{ __('No Data Found') }}</td>
                 </tr>
             @endif
         </tbody>

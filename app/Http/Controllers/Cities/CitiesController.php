@@ -64,7 +64,7 @@ class CitiesController extends Controller
             'population'      => $request->input('population'),
         ]);
 
-        return redirect()->route('cities.index')->with('success', 'Data added successfully');
+        return redirect()->route('cities.index')->with('success', __('Data Added Successfully') );
     }
 
 
@@ -131,7 +131,7 @@ class CitiesController extends Controller
 
         $populationModel->update($updateData);
 
-        return redirect()->route('cities.index')->with('success', 'City updated successfully');
+        return redirect()->route('cities.index')->with('success', __('City Updated Successfully') );
     }
 
 
@@ -153,7 +153,7 @@ class CitiesController extends Controller
  
         $populationModel->delete();
  
-        return redirect()->route('cities.index')->with('success', 'Cities deleted successfully');
+        return redirect()->route('cities.index')->with('success', __('Cities Deleted Successfully') );
 
     }
 

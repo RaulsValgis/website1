@@ -4,16 +4,16 @@
 
 <div class="container">
     <div class="row">
-        <strong><h1>Add</h1></strong>
+        <strong><h1>{{ __('Add') }}</h1></strong>
         <form action="{{ route('cities.store') }}" method="POST">
             @csrf
 
         <div class="row mb-3">
             <div class="row mb-3">
                 <div class="col">
-                    Country Dropdown
+                {{ __('Country Dropdown') }}
                     <select name="country_dropdown" id="country_dropdown" class="form-control" autocomplete="country">
-                        <option value="">Select a country</option>
+                    <option value="">{{ __('Select a country') }}</option>
                         @foreach ($countries as $country)
                             <option value="{{ $country }}">{{ $country }}</option>
                         @endforeach
@@ -23,22 +23,22 @@
                     @enderror
                 </div>
                 <div class="col">
-                    Country
-                    <input type="text" name="country_name" id="country_name" class="form-control" placeholder="Country" autocomplete="country">
+                {{ __('Country') }}
+                    <input type="text" name="country_name" id="country_name" class="form-control" placeholder="{{ __('Country') }}" autocomplete="country">
                     @error('country_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col">
-                    City
-                    <input type="text" name="city" class="form-control" placeholder="City" autocomplete="address-level2">
+                {{ __('City') }}
+                    <input type="text" name="city" class="form-control" placeholder="{{ __('City') }}" autocomplete="address-level2">
                     @error('city')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col">
-                    Population
-                    <input type="text" name="population" class="form-control" placeholder="Population" autocomplete="off">
+                {{ __('Population') }}
+                    <input type="text" name="population" class="form-control" placeholder="{{ __('Population') }}" autocomplete="off">
                     @error('population')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -46,7 +46,7 @@
             </div>
             <div class="row">
                 <div class="d-grid">
-                    <button class="btn btn-primary">ADD</button>
+                    <button class="btn btn-primary">{{ __('Add') }}</button>
                 </div>
             </div>
         </form>
