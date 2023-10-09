@@ -8,11 +8,7 @@ use App\Models\Countries;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
-use Illuminate\View\View;
+
 
 
 
@@ -21,37 +17,65 @@ class CitiesController extends Controller
 
     public function index()
     {
-    $populationModel = Cities::with('countries')->orderBy('population')->get();
+        $populationModel = Cities::with('countries')->orderBy('population')->get();
 
-    return view('cities.index', ['model' => $populationModel]);
+        return view('cities.index', ['model' => $populationModel]);
     }
+
+
+
+
+
+
+
+
+
 
     public function create()
     {
-        return view('cities.create');
+        $countries = Countries::pluck('name');
+        return view('cities.create', ['countries' => $countries]);
+        
     }
 
+
+
+
+
+
+
+
+
+
+
     public function store(Request $request)
-{
-    // Validate the request data
-    $request->validate([
-        'country_name' => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
-        'city' => 'required|string|min:1|max:100',
-        'population' => 'nullable|integer',
-    ]);
+    {
+        $request->validate([
+            'country_name'    => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'city'            => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'population'      => 'nullable|integer',
+        ]);
 
-    // Find or create the country based on the provided country name
-    $country = Countries::firstOrCreate(['name' => $request->input('country_name')]);
+        $country = Countries::firstOrCreate(['name' => $request->input('country_name')]);
 
-    // Create a new city record and associate it with the country
-    Cities::create([
-        'country_id' => $country->id,
-        'city' => $request->input('city'),
-        'population' => $request->input('population'),
-    ]);
+        Cities::create([
+            'country_id'      => $country->id,
+            'city'            => $request->input('city'),
+            'population'      => $request->input('population'),
+        ]);
 
-    return redirect()->route('cities.index')->with('success', 'Data added successfully');
-}
+        return redirect()->route('cities.index')->with('success', 'Data added successfully');
+    }
+
+
+
+
+
+
+
+
+
+
 
     public function show(string $id)
     {
@@ -64,11 +88,16 @@ class CitiesController extends Controller
 
 
 
+
+
+
+
     public function edit(string $id)
     {
-    $populationModel = Cities::with('countries')->findOrFail($id);
+        $countries = Countries::pluck('name');  
+        $populationModel = Cities::with('countries')->findOrFail($id);
 
-    return view('cities.edit', ['model' => $populationModel]);
+        return view('cities.edit', ['model' => $populationModel, 'countries' => $countries]);
     }
 
 
@@ -77,44 +106,33 @@ class CitiesController extends Controller
 
 
     public function update(Request $request, $id)
-        {
-            //dd(123);
+    {
+        $rules = [
+            'country_name'   => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'city'           => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'population'     => 'nullable|integer',
+        ];
 
+        $validator = Validator::make($request->all(), $rules);
 
-            $rules = [
-                'country'      => 'required|min:1|max:100',
-                'city'         => 'required|string|min:1|max:100',
-                'population'   => 'nullable|integer',
-            ];
-            //dd(123);
-            $validator = Validator::make($request->all(), $rules);
-            //dd(123);
-            
-
-            if ($validator->fails()) 
-            {
-                // dd($validator);
-                dd($validator->errors());
-                         // 422 is Unprocessable Entity status code
-
-                // return back()->withErrors($validator)->withInput($request->all());
-                
-            }  
-
-            $country = Countries::firstOrCreate(['name' => $request->input('country_name')]);
-            $populationModel = Cities::findOrFail($id);
-            
-
-            $updateData = [
-                'country_id' => $country->id,
-                'city' => $request->input('city'),
-                'population' => $request->input('population'),
-            ];
-            $populationModel->update($updateData);
-
-            return redirect()->route('cities.index')->with('success', 'City updated successfully');
-            
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput($request->all());
         }
+
+        $country = Countries::firstOrCreate(['name' => $request->input('country_name')]);
+
+        $populationModel = Cities::findOrFail($id);
+
+        $updateData = [
+            'country_id'    => $country->id,
+            'city'          => $request->input('city'),
+            'population'    => $request->input('population'),
+        ];
+
+        $populationModel->update($updateData);
+
+        return redirect()->route('cities.index')->with('success', 'City updated successfully');
+    }
 
 
 
@@ -136,6 +154,7 @@ class CitiesController extends Controller
         $populationModel->delete();
  
         return redirect()->route('cities.index')->with('success', 'Cities deleted successfully');
+
     }
 
 

@@ -8,10 +8,23 @@
         <form action="{{ route('cities.store') }}" method="POST">
             @csrf
 
+        <div class="row mb-3">
             <div class="row mb-3">
                 <div class="col">
+                    Country Dropdown
+                    <select name="country_dropdown" id="country_dropdown" class="form-control" autocomplete="country">
+                        <option value="">Select a country</option>
+                        @foreach ($countries as $country)
+                            <option value="{{ $country }}">{{ $country }}</option>
+                        @endforeach
+                    </select>
+                    @error('country_name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col">
                     Country
-                    <input type="text" name="country_name" class="form-control" placeholder="Country" autocomplete="country">
+                    <input type="text" name="country_name" id="country_name" class="form-control" placeholder="Country" autocomplete="country">
                     @error('country_name')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -55,5 +68,13 @@
         </div>
     </div>
 @endif
+
+
+<script>
+    document.getElementById('country_dropdown').addEventListener('change', function() {
+        document.getElementById('country_name').value = this.value;
+        document.getElementById('country_name').readOnly = false;  
+    });
+</script>
 
 @endsection

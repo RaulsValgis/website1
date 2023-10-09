@@ -40,7 +40,7 @@
                 @foreach($model as $rs)
                     <tr>
                         <td class="align-middle">{{ $loop->iteration }}</td>
-                        <td class="align-middle">{{ $rs->countries->name }}</td>
+                        <td class="align-middle">{{ $rs->countries ? $rs->countries->name : 'N/A' }}</td>
                         <td class="align-middle">{{ $rs->city }}</td>
                         <td class="align-middle">{{ $rs->population }}</td>
                         <td class="align-middle">
