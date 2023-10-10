@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Cities\CitiesController;
 use App\Http\Controllers\Reader\ReaderController;

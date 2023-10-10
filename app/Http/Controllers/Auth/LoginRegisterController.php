@@ -39,15 +39,15 @@ class LoginRegisterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:250',
-            'email' => 'required|email|max:250|unique:users',
-            'password' => 'required|min:8|confirmed'
+            'name'      => 'required|string|max:250',
+            'email'     => 'required|email|max:250|unique:users',
+            'password'  => 'required|min:8|confirmed'
         ]);
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'password'  => Hash::make($request->password)
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -76,8 +76,8 @@ class LoginRegisterController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+            'email'     => 'required|email',
+            'password'  => 'required'
         ]);
 
         if(Auth::attempt($credentials))

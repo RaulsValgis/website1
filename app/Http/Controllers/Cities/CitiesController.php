@@ -18,8 +18,9 @@ class CitiesController extends Controller
     public function index()
     {
         $populationModel = Cities::with('countries')->orderBy('population')->get();
+        $countries = Countries::pluck('name');
 
-        return view('cities.index', ['model' => $populationModel]);
+        return view('cities.index', ['model' => $populationModel], ['countries' => $countries]);
     }
 
 
@@ -34,6 +35,7 @@ class CitiesController extends Controller
     public function create()
     {
         $countries = Countries::pluck('name');
+
         return view('cities.create', ['countries' => $countries]);
         
     }
@@ -93,12 +95,17 @@ class CitiesController extends Controller
 
 
     public function edit(string $id)
-    {
-        $countries = Countries::pluck('name');  
-        $populationModel = Cities::with('countries')->findOrFail($id);
+{ 
+    $populationModel = Cities::with('countries')->findOrFail($id);
 
-        return view('cities.edit', ['model' => $populationModel, 'countries' => $countries]);
-    }
+    $response = [
+        'country'           => $populationModel->countries ? $populationModel->countries->name : null,
+        'city'              => $populationModel->city,
+        'population'        => $populationModel->population,
+    ];
+
+    return response()->json($response);
+}
 
 
 

@@ -189,8 +189,8 @@ return [
 
 
     'available_locales' => [
-        'English' => 'en',
-        'Latvian' => 'lv',
+        '🇬🇧 English' => 'en',
+        '🇱🇻 Latvian' => 'lv',
     ]
 
 ];
