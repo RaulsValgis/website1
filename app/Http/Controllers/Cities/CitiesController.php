@@ -95,7 +95,7 @@ class CitiesController extends Controller
 
 
     public function edit(string $id)
-{ 
+    { 
     $populationModel = Cities::with('countries')->findOrFail($id);
 
     $response = [
@@ -105,7 +105,7 @@ class CitiesController extends Controller
     ];
 
     return response()->json($response);
-}
+    }
 
 
 

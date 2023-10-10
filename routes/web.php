@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Cities\CitiesController;
-use App\Http\Controllers\Reader\ReaderController;
+use App\Http\Controllers\Map\MapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ Route::post('/cities/{id}/delete', [CitiesController::class, 'destroy'])->name('
 
 
 // FileReader
-Route::resource('/reader', ReaderController::class);
+Route::resource('/map', MapController::class);
 
 
 

@@ -15,6 +15,8 @@
     </script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 </head>
 <style>
@@ -41,7 +43,7 @@ h1 {
         <div class="container " >
             <a class="navbar-brand" href="{{ URL('/') }}">{{ __('Home') }}</a>
             <a class="navbar-brand" href="{{ route('cities.index') }}">{{ __('Cities') }}</a>
-            <a class="navbar-brand" href="{{ route('reader.index') }}">{{ __('Reader') }}</a>
+            <a class="navbar-brand" href="{{ route('map.index') }}">{{ __('Map') }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

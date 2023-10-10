@@ -20,7 +20,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="addModalLabel">{{ __('Add Data') }}</h5>
-            <button type="button" class="close" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" id="addModal" onclick="closeAddModal()">X</span>
             </button>
         </div>
@@ -30,8 +30,8 @@
 
                 <!-- Form fields for adding data -->
                 <div class="form-group">
-                    <label for="country_dropdown">{{ __('Country Dropdown') }}</label>
-                    <select name="country_dropdown" id="country_dropdown" class="form-control" autocomplete="country">
+                    <label for="add_country_dropdown">{{ __('Country Dropdown') }}</label>
+                    <select name="add_country_dropdown" id="add_country_dropdown" class="form-control" autocomplete="country">
                         <!-- Populate options dynamically based on your data -->
                         <option value="">{{ __('Select a Country') }}</option>
                         @foreach ($countries as $country)
@@ -40,8 +40,8 @@
                     </select>
                 </div>
                 <div class="form-group">    
-                    <label for="country_name">{{ __('Country') }}</label>
-                    <input type="text" name="country_name" id="country_name" class="form-control" placeholder="{{ __('Country') }}" autocomplete="address-level2">
+                    <label for="add_country_name">{{ __('Country') }}</label>
+                    <input type="text" name="add_country_name" id="add_country_name" class="form-control" placeholder="{{ __('Country') }}" autocomplete="address-level2">
                 </div>
                 <div class="form-group">
                     <label for="city">{{ __('City') }}</label>
@@ -75,8 +75,8 @@
                     @csrf
 
                     <div class="form-group">
-                    <label for="country_dropdown">{{ __('Country Dropdown') }}</label>
-                    <select name="country_dropdown" id="country_dropdown" class="form-control" autocomplete="country">
+                    <label for="edit_country_dropdown">{{ __('Country Dropdown') }}</label>
+                    <select name="edit_country_dropdown" id="edit_country_dropdown" class="form-control" autocomplete="country">
                             <!-- Populate options dynamically based on your data -->
                             <option value="">{{ __('Select a Country') }}</option>
                             @foreach ($countries as $country)
@@ -85,8 +85,8 @@
                         </select>
                     </div>
                     <div class="form-group">    
-                        <label for="country_name">{{ __('Country') }}</label>
-                        <input type="text" name="country_name" id="country_name" class="form-control" placeholder="{{ __('Country') }}" autocomplete="address-level2">
+                        <label for="edit_country_name">{{ __('Country') }}</label>
+                        <input type="text" name="edit_country_name" id="edit_country_name" class="form-control" placeholder="{{ __('Country') }}" autocomplete="address-level2">
                     </div>
 
                 <div class="form-group">
@@ -232,18 +232,29 @@
     
 
     document.addEventListener('DOMContentLoaded', (event) => {
-    const countryDropdown = document.getElementById('country_dropdown');
-    const countryNameInput = document.getElementById('country_name');
+        const addCountryDropdown = document.getElementById('add_country_dropdown');
+        const addCountryNameInput = document.getElementById('add_country_name');
 
+        const editCountryDropdown = document.getElementById('edit_country_dropdown');
+        const editCountryNameInput = document.getElementById('edit_country_name');
 
-    if (countryDropdown && countryNameInput) {
-        countryDropdown.addEventListener('change', function() {
-            countryNameInput.value = this.value;
-            countryNameInput.readOnly = false;  
-        });
-    } else {
-        console.error('Country dropdown or country name input not found.');
-    }
+        if (addCountryDropdown && addCountryNameInput) {
+            addCountryDropdown.addEventListener('change', function() {
+                addCountryNameInput.value = this.value;
+                addCountryNameInput.readOnly = false;
+            });
+        } else {
+            console.error('Add Country dropdown or country name input not found.');
+        }
+
+        if (editCountryDropdown && editCountryNameInput) {
+            editCountryDropdown.addEventListener('change', function() {
+                editCountryNameInput.value = this.value;
+                editCountryNameInput.readOnly = false;
+            });
+        } else {
+            console.error('Edit Country dropdown or country name input not found.');
+        }
     });
 
 

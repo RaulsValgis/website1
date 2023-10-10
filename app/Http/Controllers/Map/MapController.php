@@ -1,23 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Reader;
+namespace App\Http\Controllers\Map;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
-use Illuminate\View\View;
 
-class ReaderController extends Controller
+
+class MapController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests;
 
     public function index()
     {
-        return view('reader.index');
+        return view('map.index');
     }
 }
