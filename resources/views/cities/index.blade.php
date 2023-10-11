@@ -71,8 +71,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="editForm" action="{{ route('cities.update', $model->first()->id) }}" method="POST">
-                    @csrf
+            <form id="editForm" action="{{ isset($model) && $model->isNotEmpty() ? route('cities.update', $model->first()->id) : '#' }}" method="POST">
+                @csrf
+
 
                     <div class="form-group">
                     <label for="edit_country_dropdown">{{ __('Country Dropdown') }}</label>
@@ -138,7 +139,7 @@
                         <td class="align-middle">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="{{ route('cities.show', $rs->id) }}" type="button" class="btn btn-secondary">{{ __('Detail') }}</a>
-                                <button type="button" class="btn btn-warning" onclick="openEditModal({{ $rs->id }})">{{ __('Edit') }}</button>
+                                <button type="button" class="btn btn-warning" onclick="openEditModal({{ $rs->id }}, {{ json_encode($model) }})">{{ __('Edit') }}</button>
                                 <form action="{{ route('cities.destroy', $rs->id) }}" method="POST" class="btn btn-danger p-0" onsubmit="return confirm('{{ __('Delete') }}')">
                                     @csrf
                                     @method('POST')
@@ -180,35 +181,53 @@
     });
     }
  
-    function openEditModal(id) {
-    $.ajax({
-        url: `/cities/${id}/edit`, 
-        type: "GET",
-        success: function(response) {
-            $('#country_dropdown').val(response.country);
-            $('#edit_city').val(response.city);
-            $('#edit_population').val(response.population);
+    function openEditModal(id, model) {
+    if (Array.isArray(model) && model.length > 0) {
+        const selectedModel = model.find(item => item.id === id);
 
+        if (selectedModel) {
+            // Make an AJAX request to fetch the data for the specified ID
+            $.ajax({
+                url: `{{ url('cities') }}/${id}/edit`,
+                type: "GET",
+                success: function (response) {
+                    // Populate the form fields with the retrieved data
+                    $('#edit_country_name').val(response.edit_country_name);
+                    $('#city').val(response.city);
+                    $('#population').val(response.population);
+                },
+                error: function (error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+
+            const actionUrl = `{{ url('cities') }}/${id}/update`;
+            $('#editForm').attr('action', actionUrl);
             $('#editModal').modal('show');
-        },
-        error: function(error) {
-            console.error('Error fetching data for edit:', error);
+        } else {
+            console.error('Model not found for ID: ', id);
         }
-    });
+    } else {
+        console.error('Model is empty or null.');
     }
+}
 
 
-    function submitEditForm() {
-    $('#editForm').submit(function(e) {
+    function submitEditForm(model) {
+    var $actionUrl = model.length > 0 ? "{{ route('cities.update', '') }}/" + model[0].id : '';
+
+    $('#editForm').attr('action', $actionUrl);
+
+    $('#editForm').submit(function (e) {
         e.preventDefault();
         $.ajax({
-            url: "{{ route('cities.update', $model->first()->id) }}",
+            url: $actionUrl,
             type: "POST",
             data: $(this).serialize(),
-            success: function(response) {
+            success: function (response) {
                 $('#editModal').modal('hide');
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Error updating data:', error);
             }
         });

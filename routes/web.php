@@ -37,14 +37,16 @@ Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout
 Route::get('/cities', [CitiesController::class, 'index'])->name('cities.index');
 Route::get('/cities/create', [CitiesController::class, 'create'])->name('cities.create');
 Route::post('/cities', [CitiesController::class, 'store'])->name('cities.store');
-Route::get('/cities/{id}', [CitiesController::class, 'show'])->name('cities.show');
 Route::get('/cities/{id}/edit', [CitiesController::class, 'edit'])->name('cities.edit');
 Route::post('/cities/{id}/update', [CitiesController::class, 'update'])->name('cities.update');
 Route::post('/cities/{id}/delete', [CitiesController::class, 'destroy'])->name('cities.destroy');
+Route::get('/cities/{id}', [CitiesController::class, 'show'])->name('cities.show');
 
 
-// FileReader
+
+// Maps
 Route::resource('/map', MapController::class);
+Route::post('/map/save', [MapController::class, 'StreetSave'])->name('map.save');
 
 
 

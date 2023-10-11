@@ -52,13 +52,14 @@ class CitiesController extends Controller
 
     public function store(Request $request)
     {
+        
         $request->validate([
-            'country_name'    => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'add_country_name'    => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
             'city'            => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
             'population'      => 'nullable|integer',
         ]);
 
-        $country = Countries::firstOrCreate(['name' => $request->input('country_name')]);
+        $country = Countries::firstOrCreate(['name' => $request->input('add_country_name')]);
 
         Cities::create([
             'country_id'      => $country->id,
@@ -81,7 +82,7 @@ class CitiesController extends Controller
 
     public function show(string $id)
     {
-        $populationModel = cities::findOrFail($id);
+        $populationModel = Cities::findOrFail($id);
  
         return view('cities.show', [ 'model' => $populationModel ]);
     }
@@ -94,12 +95,12 @@ class CitiesController extends Controller
 
 
 
-    public function edit(string $id)
+    public function edit(int $id)
     { 
     $populationModel = Cities::with('countries')->findOrFail($id);
 
     $response = [
-        'country'           => $populationModel->countries ? $populationModel->countries->name : null,
+        'edit_country_name' => $populationModel->countries ? $populationModel->countries->name : null,
         'city'              => $populationModel->city,
         'population'        => $populationModel->population,
     ];
@@ -115,7 +116,7 @@ class CitiesController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'country_name'   => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'edit_country_name'   => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
             'city'           => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
             'population'     => 'nullable|integer',
         ];
@@ -126,7 +127,7 @@ class CitiesController extends Controller
             return back()->withErrors($validator)->withInput($request->all());
         }
 
-        $country = Countries::firstOrCreate(['name' => $request->input('country_name')]);
+        $country = Countries::firstOrCreate(['name' => $request->input('edit_country_name')]);
 
         $populationModel = Cities::findOrFail($id);
 
@@ -156,7 +157,7 @@ class CitiesController extends Controller
 
     public function destroy(string $id)
     {
-        $populationModel = cities::findOrFail($id);
+        $populationModel = Cities::findOrFail($id);
  
         $populationModel->delete();
  

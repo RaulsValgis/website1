@@ -6,22 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     public function up(): void
     {
-        Schema::create('cities', function (Blueprint $table) {
+        Schema::create('streets', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('street', 100);
+            $table->integer('city_id')
+                  ->unsigned()
+                  ->index();
             $table->integer('country_id')
                   ->unsigned()
                   ->index();
-            $table->string('city', 100)
-                  ->nullable();
-            $table->integer('population')
-                  ->unsigned()
-                  ->nullable();
             $table->timestamps();
 
-            // Foreign key constraint
+            // Foreign key constraints
+            $table->foreign('city_id')
+                  ->references('id')
+                  ->on('cities')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
+
             $table->foreign('country_id')
                   ->references('id')
                   ->on('countries')
@@ -29,5 +33,4 @@ return new class extends Migration
                   ->onDelete('cascade');
         });
     }
-    
 };

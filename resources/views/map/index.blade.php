@@ -1,118 +1,99 @@
 @extends('auth.layouts')
 
 @section('content')
+<style>
+    .diff {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    .diff2 {
+        border-style: solid;
+        border-radius: 20px;
+        padding-left: 10px;
+    }
+</style>
+
+<div class="container">
     <div class="row">
         <div class="col-10">
             <div id="map" style="height: 800px; width: 100%;"></div>
         </div>
         <div class="col-2">
-            <div class="input">
-                <input type="text" id="country" placeholder="Enter country">
+            <div class="input diff">
+                <input class="diff2" type="text" id="country" placeholder="{{ __('Country') }}" autocomplete="off">
             </div>
-            <div class="input">
-                <input type="text" id="city" placeholder="Enter city">
+            <div class="input diff">
+                <input class="diff2" type="text" id="city" placeholder="{{ __('City') }}" autocomplete="off">
             </div>
-            <div class="input">
-                <input type="text" id="street" placeholder="Enter street">
+            <div class="input diff">
+                <input class="diff2" type="text" id="street" placeholder="{{ __('Street') }}" autocomplete="off">
             </div>
-            <div class="input">
-                <button onclick="findLocation()">Find Location</button>
+            <div class="input diff">
+                <button type="button" class="btn btn-primary" onclick="findLocation()">{{ __('Find Location') }}</button>
             </div>
         </div> 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
 
 <script>
-
-
-
     var map = L.map('map').setView([57.54108, 25.42751], 13);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    }).addTo(map);
-
-
-
-
-
-
-
-        //Outside of the function: variable to hold the current marker
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
     var currentMarker = null;
 
-    function findLocation() {
+    async function findLocation() {
         var country = encodeURIComponent(document.getElementById('country').value);
         var city = encodeURIComponent(document.getElementById('city').value);
         var street = encodeURIComponent(document.getElementById('street').value);
 
-        var query = `${street}, ${city}, ${country}`;
-        var url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}`;
+        // Use Nominatim API to get the latitude and longitude
+        let nominatimUrl = `https://nominatim.openstreetmap.org/search?country=${country}&city=${city}&street=${street}&format=json`;
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.length > 0) {
-                    var location = data[0];
-                    var latitude = parseFloat(location.lat);
-                    var longitude = parseFloat(location.lon);
+        try {
+            let locationResponse = await fetch(nominatimUrl);
+            let locationData = await locationResponse.json();
 
-                    var decodedStreet = decodeURIComponent(street);
-                    
-                    map.setView([latitude, longitude], 20);
-                    
-                    // Remove the old marker if it exists
-                    if (currentMarker) {
-                        map.removeLayer(currentMarker);
-                    }
+            if (locationData.length > 0) {
+                let lat = locationData[0].lat;
+                let lon = locationData[0].lon;
 
-                    // Add a new marker to the location and store its reference in currentMarker
-                    currentMarker = L.marker([latitude, longitude]).addTo(map).bindPopup(`Location: ${decodedStreet}, ${city}, ${country}`).openPopup();
-                    
-                } else {
-                    alert('Location not found.');
+                if (currentMarker) {
+                    map.removeLayer(currentMarker);  // Remove the previous marker
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while fetching the location.');
-            });
+
+                currentMarker = L.marker([lat, lon]).addTo(map);
+                map.setView([lat, lon], 30);
+
+                var url = "{{ route('map.save') }}";
+
+                var data = {
+                    country: country,
+                    city: city,
+                    street: street
+                };
+
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    let text = await response.text();
+                    throw new Error(text || 'Network response was not ok');
+                }
+
+                let saveData = await response.json();
+                console.log('Data saved successfully:', saveData);
+            } else {
+                console.error('Location not found');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
-
-
-
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @endsection
-
