@@ -14,12 +14,11 @@
     }
 </style>
 
-<div class="container">
     <div class="row">
-        <div class="col-10">
+        <div class="col-9">
             <div id="map" style="height: 800px; width: 100%;"></div>
         </div>
-        <div class="col-2">
+        <div class="col-3">
             <div class="input diff">
                 <input class="diff2" type="text" id="country" placeholder="{{ __('Country') }}" autocomplete="off">
             </div>
@@ -32,44 +31,56 @@
             <div class="input diff">
                 <button type="button" class="btn btn-primary" onclick="findLocation()">{{ __('Find Location') }}</button>
             </div>
-        </div> 
+            <div class="address">
+                <select id="address-list" class="js-example-basic-single" style="width: 100%">
+
+                </select>
+            </div>
+
+        </div>
     </div>
-</div>
 
 <script>
     var map = L.map('map').setView([57.54108, 25.42751], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
     var currentMarker = null;
 
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
+
     async function findLocation() {
-        var country = encodeURIComponent(document.getElementById('country').value);
-        var city = encodeURIComponent(document.getElementById('city').value);
-        var street = encodeURIComponent(document.getElementById('street').value);
+        const country = document.getElementById('country').value;
+        const city = document.getElementById('city').value;
+        const street = document.getElementById('street').value;
 
-        // Use Nominatim API to get the latitude and longitude
-        let nominatimUrl = `https://nominatim.openstreetmap.org/search?country=${country}&city=${city}&street=${street}&format=json`;
+        var country2 = encodeURIComponent(document.getElementById('country').value);
+        var city2 = encodeURIComponent(document.getElementById('city').value);
+        var street2 = encodeURIComponent(document.getElementById('street').value);
 
-        try {
-            let locationResponse = await fetch(nominatimUrl);
-            let locationData = await locationResponse.json();
+        // Construct the query URL for the new Laravel route
+        const apiUrl = `/find-location?country=${encodeURIComponent(country)}&city=${encodeURIComponent(city)}&street=${encodeURIComponent(street)}`;
+        let nominatimUrl = `https://nominatim.openstreetmap.org/search?country=${country2}&city=${city2}&street=${street2}&format=json`;
 
-            if (locationData.length > 0) {
+        let locationResponse = await fetch(nominatimUrl);
+        let locationData = await locationResponse.json();
+
+        if (locationData.length > 0) {
                 let lat = locationData[0].lat;
                 let lon = locationData[0].lon;
-
                 if (currentMarker) {
-                    map.removeLayer(currentMarker);  // Remove the previous marker
+                    map.removeLayer(currentMarker);
                 }
 
                 currentMarker = L.marker([lat, lon]).addTo(map);
-                map.setView([lat, lon], 30);
+                map.setView([lat, lon], 20);
 
                 var url = "{{ route('map.save') }}";
 
                 var data = {
-                    country: country,
-                    city: city,
-                    street: street
+                    country: country2,
+                    city: city2,
+                    street: street2
                 };
 
                 let response = await fetch(url, {
@@ -91,9 +102,27 @@
             } else {
                 console.error('Location not found');
             }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        // Make AJAX request to the Laravel route
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const addressList = $('#address-list');
+                addressList.empty();
+
+                if (data && data.data.length > 0) {
+                    data.data.forEach(item => {
+                        addressList.append(new Option(item.display_name, item.display_name));
+                    });
+                } else {
+                    addressList.append(new Option('No results found.', ''));
+                }
+
+                // Refresh Select2 to reflect the updated options
+                addressList.trigger('change');
+
+            })
+            .catch(error => console.error('Error:', error));
     }
 </script>
+
 @endsection

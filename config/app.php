@@ -191,6 +191,7 @@ return [
     'available_locales' => [
         '🇬🇧 English' => 'en',
         '🇱🇻 Latvian' => 'lv',
+        'Enchantment table' => 'mc'
     ]
 
 ];

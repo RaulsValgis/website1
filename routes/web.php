@@ -33,6 +33,12 @@ Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('d
 Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
 
 
+
+
+
+
+
+
 // Cities/Countries
 Route::get('/cities', [CitiesController::class, 'index'])->name('cities.index');
 Route::get('/cities/create', [CitiesController::class, 'create'])->name('cities.create');
@@ -44,9 +50,24 @@ Route::get('/cities/{id}', [CitiesController::class, 'show'])->name('cities.show
 
 
 
+
+
+
+
+
+
 // Maps
 Route::resource('/map', MapController::class);
 Route::post('/map/save', [MapController::class, 'StreetSave'])->name('map.save');
+Route::get('/find-location', [MapController::class, 'findLocation']);
+
+
+
+
+
+
+
+
 
 
 

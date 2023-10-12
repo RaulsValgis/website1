@@ -16,10 +16,31 @@ class Streets extends Model
 
     public $timestamps = true;
 
+
+
+
+
+
+
+
+
+
+
+    
     public function cities()
     {
         return $this->belongsTo(Cities::class, 'city_id');
     }
+
+
+
+
+
+
+
+
+
+
 
 
     public function countries()

@@ -17,10 +17,14 @@ class CitiesController extends Controller
 
     public function index()
     {
-        $populationModel = Cities::with('countries')->orderBy('population')->get();
-        $countries = Countries::pluck('name');
+        $populationModel = Cities::with    ('countries')
+                         ->orderBy         ('population')
+                         ->get             ();
+        $countries       = Countries::pluck('name');
 
-        return view('cities.index', ['model' => $populationModel], ['countries' => $countries]);
+        return view('cities.index', 
+        ['model'     => $populationModel], 
+        ['countries' => $countries]);
     }
 
 
@@ -34,9 +38,11 @@ class CitiesController extends Controller
 
     public function create()
     {
-        $countries = Countries::pluck('name');
+        $countries  = Countries::pluck
+                    ('name');
 
-        return view('cities.create', ['countries' => $countries]);
+        return view('cities.create', 
+        ['countries' => $countries]);
         
     }
 
@@ -54,12 +60,14 @@ class CitiesController extends Controller
     {
         
         $request->validate([
-            'add_country_name'    => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'add_country_name'=> 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
             'city'            => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
             'population'      => 'nullable|integer',
         ]);
 
-        $country = Countries::firstOrCreate(['name' => $request->input('add_country_name')]);
+        $country = Countries::firstOrCreate([
+            'name'            => $request->input('add_country_name'
+        )]);
 
         Cities::create([
             'country_id'      => $country->id,
@@ -67,7 +75,8 @@ class CitiesController extends Controller
             'population'      => $request->input('population'),
         ]);
 
-        return redirect()->route('cities.index')->with('success', __('Data Added Successfully') );
+        return redirect()->route('cities.index')
+                         ->with('success', __('Data Added Successfully') );
     }
 
 
@@ -84,7 +93,8 @@ class CitiesController extends Controller
     {
         $populationModel = Cities::findOrFail($id);
  
-        return view('cities.show', [ 'model' => $populationModel ]);
+        return view('cities.show', 
+        [ 'model' => $populationModel ]);
     }
 
 
@@ -97,7 +107,8 @@ class CitiesController extends Controller
 
     public function edit(int $id)
     { 
-    $populationModel = Cities::with('countries')->findOrFail($id);
+    $populationModel = Cities::with('countries')
+                     ->findOrFail($id);
 
     $response = [
         'edit_country_name' => $populationModel->countries ? $populationModel->countries->name : null,
@@ -117,19 +128,22 @@ class CitiesController extends Controller
     {
         $rules = [
             'edit_country_name'   => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
-            'city'           => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
-            'population'     => 'nullable|integer',
+            'city'                => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'population'          => 'nullable|integer',
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput($request->all());
+            return back()->withErrors($validator)
+                         ->withInput($request->all());
         }
 
-        $country = Countries::firstOrCreate(['name' => $request->input('edit_country_name')]);
+        $country = Countries::firstOrCreate([
+                 'name'     => $request->input('edit_country_name')
+        ]);
 
-        $populationModel = Cities::findOrFail($id);
+        $populationModel    = Cities::findOrFail($id);
 
         $updateData = [
             'country_id'    => $country->id,
