@@ -1,111 +1,14 @@
 @extends('auth.layouts')
 
 @section('content')
-<style>
-    .border-solid {
-        border-style: solid;
-        border-width: 1px;
-    }
+<style> .border-solid { border-style: solid; border-width: 1px; } .padding-5 { padding-top: 5px; padding-bottom: 5px;
+    margin-bottom: 5px; } </style>
 
-    .padding-5 {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        margin-bottom: 5px;
-    }
-</style>
-
-<!-- Add Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="addModalLabel">{{ __('Add Data') }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true" id="addModal" onclick="closeAddModal()">X</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="addForm" action="{{ route('cities.store') }}" method="POST">
-                @csrf
-
-                <!-- Form fields for adding data -->
-                <div class="form-group">
-                    <label for="add_country_dropdown">{{ __('Country Dropdown') }}</label>
-                    <select name="add_country_dropdown" id="add_country_dropdown" class="form-control" autocomplete="country">
-                        <!-- Populate options dynamically based on your data -->
-                        <option value="">{{ __('Select a Country') }}</option>
-                        @foreach ($countries as $country)
-                            <option value="{{ $country }}">{{ $country }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">    
-                    <label for="add_country_name">{{ __('Country') }}</label>
-                    <input type="text" name="add_country_name" id="add_country_name" class="form-control" placeholder="{{ __('Country') }}" autocomplete="address-level2">
-                </div>
-                <div class="form-group">
-                    <label for="city">{{ __('City') }}</label>
-                    <input type="text" name="city" class="form-control" placeholder="{{ __('City') }}" autocomplete="address-level2">
-                </div>
-
-                <div class="form-group">
-                    <label for="population">{{ __('Population') }}</label>
-                    <input type="text" name="population" class="form-control" placeholder="{{ __('Population') }}" autocomplete="off">
-                </div>
-                <div class="error-message text-danger"></div>
-                <button type="submit" class="btn btn-primary">{{ __('Add') }}</button>
-            </form>
-        </div>
-    </div>
-</div>
-</div>
+    <!-- Add Modal -->
+@include('partials.add_modal')
 
 <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">{{ __('Edit Data') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" id="editmodal" onclick="closeEditModal()">X</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            <form id="editForm" action="{{ isset($model) && $model->isNotEmpty() ? route('cities.update', $model->first()->id) : '#' }}" method="POST">
-                @csrf
-
-
-                    <div class="form-group">
-                    <label for="edit_country_dropdown">{{ __('Country Dropdown') }}</label>
-                    <select name="edit_country_dropdown" id="edit_country_dropdown" class="form-control" autocomplete="country">
-                            <!-- Populate options dynamically based on your data -->
-                            <option value="">{{ __('Select a Country') }}</option>
-                            @foreach ($countries as $country)
-                                <option value="{{ $country }}">{{ $country }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">    
-                        <label for="edit_country_name">{{ __('Country') }}</label>
-                        <input type="text" name="edit_country_name" id="edit_country_name" class="form-control" placeholder="{{ __('Country') }}" autocomplete="address-level2">
-                    </div>
-
-                <div class="form-group">
-                    <label for="city">{{ __('city') }}</label>
-                    <input type="text" name="city" id="city" class="form-control" placeholder="{{ __('city') }}" autocomplete="address-level2">
-                </div>
-
-                <div class="form-group">
-                    <label for="population">{{ __('population') }}</label>
-                    <input type="text" name="population" id="population" class="form-control" placeholder="{{ __('population') }}" autocomplete="address-level2">
-                </div>
-                <div class="error-message text-danger"></div>
-                <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
-            </form>
-        </div>
-    </div>
-</div>
-</div>
+@include('partials.edit_modal')
 
 <div class="container">
     <button type="button" class="btn btn-primary" onclick="openAddModal()">{{ __('Add') }}</button>
@@ -158,10 +61,24 @@
     </table>
 </div>
 
+
+
+
+
+
+
 <script>
+
+
+
+
+
+
+
+
     function openAddModal() {
     $('#addModal').modal('show');
-}
+    }
 
     function addData() {
         $('#addForm').submit(function(e) {
@@ -181,6 +98,17 @@
     });
     }
  
+
+
+
+
+
+
+
+
+
+
+
     function openEditModal(id, model) {
     if (Array.isArray(model) && model.length > 0) {
         const selectedModel = model.find(item => item.id === id);
@@ -210,7 +138,17 @@
     } else {
         console.error('Model is empty or null.');
     }
-}
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     function submitEditForm(model) {
@@ -235,16 +173,37 @@
     }
 
 
+
+
+
+
+
+
+
     function closeAddModal() {
-        $('#addModal').modal('hide');
-        // const addModal = document.getElementById('addModal');
-        // addModal.remove();
-        
+        $('#addModal').modal('hide');       
     }
+
+
+
+
+
+
+
+
+
+
 
     function closeEditModal() {
         $('#editModal').modal('hide');
     }
+
+
+
+
+
+
+
 
 
 
@@ -277,8 +236,16 @@
     });
 
 
+
+
+
+
+
+
+
+
+
+
+
 </script>
 @endsection
-
-
-

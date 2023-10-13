@@ -60,9 +60,9 @@ class CitiesController extends Controller
     {
         
         $request->validate([
-            'add_country_name'=> 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
-            'city'            => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
-            'population'      => 'nullable|integer',
+            'add_country_name'=> 'required|string|min:1|max:100',
+            'city'            => 'required|string|min:1|max:100',
+            'population'      => 'nullable|integer|max:10',
         ]);
 
         $country = Countries::firstOrCreate([
@@ -70,9 +70,12 @@ class CitiesController extends Controller
         )]);
 
         Cities::create([
-            'country_id'      => $country->id,
-            'city'            => $request->input('city'),
-            'population'      => $request->input('population'),
+            'country_id'      => $country
+                              ->id,
+            'city'            => $request
+                              ->input('city'),
+            'population'      => $request
+                              ->input('population'),
         ]);
 
         return redirect()->route('cities.index')
@@ -111,9 +114,13 @@ class CitiesController extends Controller
                      ->findOrFail($id);
 
     $response = [
-        'edit_country_name' => $populationModel->countries ? $populationModel->countries->name : null,
-        'city'              => $populationModel->city,
-        'population'        => $populationModel->population,
+        'edit_country_name' => $populationModel->countries ? $populationModel
+                            ->countries
+                            ->name : null,
+        'city'              => $populationModel
+                            ->city,
+        'population'        => $populationModel
+                            ->population,
     ];
 
     return response()->json($response);
@@ -126,6 +133,7 @@ class CitiesController extends Controller
 
     public function update(Request $request, $id)
     {
+        
         $rules = [
             'edit_country_name'   => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
             'city'                => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
@@ -153,7 +161,8 @@ class CitiesController extends Controller
 
         $populationModel->update($updateData);
 
-        return redirect()->route('cities.index')->with('success', __('City Updated Successfully') );
+        return redirect()->route('cities.index')
+                         ->with('success', __('City Updated Successfully') );
     }
 
 
@@ -175,7 +184,8 @@ class CitiesController extends Controller
  
         $populationModel->delete();
  
-        return redirect()->route('cities.index')->with('success', __('Cities Deleted Successfully') );
+        return redirect()->route('cities.index')
+                         ->with('success', __('Cities Deleted Successfully') );
 
     }
 

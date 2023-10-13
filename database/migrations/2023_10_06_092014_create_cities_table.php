@@ -14,8 +14,7 @@ return new class extends Migration
             $table->integer('country_id')
                   ->unsigned()
                   ->index();
-            $table->string('city', 100)
-                  ->nullable();
+            $table->string('city', 100);
             $table->integer('population')
                   ->unsigned()
                   ->nullable();
@@ -26,7 +25,7 @@ return new class extends Migration
                   ->references('id')
                   ->on('countries')
                   ->onUpdate('cascade')
-                  ->onDelete('cascade');
+                  ->onDelete('set null');
         });
     }
     

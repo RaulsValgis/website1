@@ -37,6 +37,8 @@
     "Edit Data":                    "Rediģēt datus",
     "Map":                          "Karte",
     "Find Location":                "Atrast Lokāciju",
-    "Location Saved":               "Lokcija saglabāta"
+    "Location Saved":               "Lokcija saglabāta",
+    "No Results Found":             "Nav atrasti rezultāti",
+    "Location":                     "Atrašanās vieta"
 }
 
