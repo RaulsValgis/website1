@@ -58,9 +58,9 @@ class MapController extends Controller
             'street'  => 'required|string|max:255',
         ]);
 
-        $countryName  = $request ->input ('country');
-        $cityName     = $request ->input ('city');
-        $streetName   = $request ->input ('street');
+        $countryName  = urldecode($request->input('country'));
+        $cityName     = urldecode($request->input('city'));
+        $streetName   = urldecode($request->input('street'));
 
         $decodedStreetName = urldecode($streetName);
         $country = Countries::firstOrCreate(['name' => $countryName]);

@@ -1,8 +1,20 @@
 @extends('auth.layouts')
 
 @section('content')
-<style> .border-solid { border-style: solid; border-width: 1px; } .padding-5 { padding-top: 5px; padding-bottom: 5px;
-    margin-bottom: 5px; } </style>
+<style> 
+
+    .border-solid { 
+        border-style: solid; 
+        border-width: 1px; 
+    } 
+
+    .padding-5 { 
+        padding-top: 5px; 
+        padding-bottom: 5px;
+        margin-bottom: 5px; 
+    } 
+    
+</style>
 
     <!-- Add Modal -->
 @include('partials.add_modal')
@@ -78,26 +90,37 @@
 
     function openAddModal() {
     $('#addModal').modal('show');
+    addData();
     }
 
     function addData() {
         $('#addForm').submit(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: "{{ route('cities.store') }}",
-            type: "POST",
-            data: $('#addForm').serialize(),
-            success: function(response) {
-                $('#addModal').modal('hide');
-            },
-            error: function(error) {
-                console.error('Error adding data:', error);
-                $('#addModal').find('.error-message').text(error.responseJSON.message);
-            }
+            e.preventDefault();
+
+            // Get the form data
+            var formData = $(this).serialize();
+            console.log('Form data:', formData);  // Log form data
+
+            $.ajax({
+                url: "{{ route('cities.store') }}",
+                type: "POST",
+                data: formData,  // Make sure "add_city" is included in the form data
+                success: function(response) {
+                    $('#addModal').modal('hide');
+                    // Optionally, you can reload the page or update the table to reflect the new data
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error adding data:', error);
+                    console.log('XHR status:', xhr.status);
+                    console.log('Response text:', xhr.responseText);  // Log the response text
+
+                    // Display a generic error message to the user
+                    $('#addModal').find('.error-message').text('An error occurred while processing your request.');
+                }
+            });
         });
-    });
     }
- 
 
 
 
@@ -121,8 +144,8 @@
                 success: function (response) {
                     // Populate the form fields with the retrieved data
                     $('#edit_country_name').val(response.edit_country_name);
-                    $('#city').val(response.city);
-                    $('#population').val(response.population);
+                    $('#edit_city').val(response.edit_city);
+                    $('#edit_population').val(response.edit_population);
                 },
                 error: function (error) {
                     console.error('Error fetching data:', error);
@@ -152,24 +175,60 @@
 
 
     function submitEditForm(model) {
-    var $actionUrl = model.length > 0 ? "{{ route('cities.update', '') }}/" + model[0].id : '';
+        var $actionUrl = model.length > 0 ? "{{ route('cities.update', '') }}/" + model[0].id : '';
 
-    $('#editForm').attr('action', $actionUrl);
+        $('#editForm').attr('action', $actionUrl);
 
-    $('#editForm').submit(function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: $actionUrl,
-            type: "POST",
-            data: $(this).serialize(),
-            success: function (response) {
-                $('#editModal').modal('hide');
-            },
-            error: function (error) {
-                console.error('Error updating data:', error);
+        $('#editForm').submit(function (e) {
+            e.preventDefault();
+
+            // Get the values of the input fields
+            var countryName = $('#edit_country_name').val().trim();
+            var city = $('#edit_city').val().trim();
+            var population = $('#edit_population').val().trim();
+
+            // Clear any previous error messages
+            $('#editForm .error-message').text('');
+
+            // Validate the input fields
+            var hasErrors = false;
+            if (countryName.length < 1 || countryName.length > 100) {
+                $('#editForm .error-message.country-name').text('Country name must be between 1 and 100 characters.');
+                hasErrors = true;
+            }
+
+            if (city.length < 1 || city.length > 100) {
+                $('#editForm .error-message.city').text('City must be between 1 and 100 characters.');
+                hasErrors = true;
+            }
+
+            // Check if population is a valid integer
+            if (population !== '' && !Number.isInteger(parseInt(population))) {
+                $('#editForm .error-message.population').text('Population must be a valid integer.');
+                hasErrors = true;
+            }
+
+            if (hasErrors) {
+                // There are validation errors, do not close the modal
+                return;
+            } else {
+                // If no validation errors, proceed with the AJAX request
+                $.ajax({
+                    url: $actionUrl,
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        $('#editModal').modal('hide');
+                    },
+                    error: function (error) {
+                        console.error('Error updating data:', error);
+                    }
+                });
             }
         });
-    });
+
+        // Show the edit modal
+        $('#editModal').modal('show');
     }
 
 

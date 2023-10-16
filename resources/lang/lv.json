@@ -39,6 +39,9 @@
     "Find Location":                "Atrast Lokāciju",
     "Location Saved":               "Lokcija saglabāta",
     "No Results Found":             "Nav atrasti rezultāti",
-    "Location":                     "Atrašanās vieta"
+    "Location":                     "Atrašanās vieta",
+    "Total Length":                 "Attālums Kopā",
+    "A to B Length":                "No A Līdz B Attālums",
+    "Total Area":                   "Kopējais laukums"
 }
 

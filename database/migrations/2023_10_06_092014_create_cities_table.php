@@ -25,7 +25,7 @@ return new class extends Migration
                   ->references('id')
                   ->on('countries')
                   ->onUpdate('cascade')
-                  ->onDelete('set null');
+                  ->onDelete('cascade');
         });
     }
     

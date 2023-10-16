@@ -27,13 +27,13 @@
                     <input type="text" name="add_country_name" id="add_country_name" class="form-control" placeholder="{{ __('Country') }}" autocomplete="address-level2">
                 </div>
                 <div class="form-group">
-                    <label for="city">{{ __('City') }}</label>
-                    <input type="text" name="city" class="form-control" placeholder="{{ __('City') }}" autocomplete="address-level2">
+                    <label for="add_city">{{ __('City') }}</label>
+                    <input type="text" name="add_city" id="add_city" class="form-control" placeholder="{{ __('City') }}" autocomplete="address-level2">
                 </div>
 
                 <div class="form-group">
-                    <label for="population">{{ __('Population') }}</label>
-                    <input type="text" name="population" class="form-control" placeholder="{{ __('Population') }}" autocomplete="off">
+                    <label for="add_population">{{ __('Population') }}</label>
+                    <input type="text" name="add_population" id="add_population" class="form-control" placeholder="{{ __('Population') }}" autocomplete="off">
                 </div>
                 <div class="error-message text-danger"></div>
                 <button type="submit" class="btn btn-primary">{{ __('Add') }}</button>

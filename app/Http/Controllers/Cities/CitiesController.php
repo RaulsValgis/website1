@@ -17,10 +17,10 @@ class CitiesController extends Controller
 
     public function index()
     {
-        $populationModel = Cities::with    ('countries')
-                         ->orderBy         ('population')
-                         ->get             ();
-        $countries       = Countries::pluck('name');
+        $populationModel    = Cities::with('countries')
+                            ->orderBy('population')
+                            ->get();
+        $countries          = Countries::pluck('name');
 
         return view('cities.index', 
         ['model'     => $populationModel], 
@@ -38,8 +38,7 @@ class CitiesController extends Controller
 
     public function create()
     {
-        $countries  = Countries::pluck
-                    ('name');
+        $countries  = Countries::pluck('name');
 
         return view('cities.create', 
         ['countries' => $countries]);
@@ -58,11 +57,11 @@ class CitiesController extends Controller
 
     public function store(Request $request)
     {
-        
+
         $request->validate([
-            'add_country_name'=> 'required|string|min:1|max:100',
-            'city'            => 'required|string|min:1|max:100',
-            'population'      => 'nullable|integer|max:10',
+            'add_country_name'    => 'required|string|min:1|max:100',
+            'add_city'            => 'required|string|min:1|max:100',
+            'add_population'      => 'nullable|integer',
         ]);
 
         $country = Countries::firstOrCreate([
@@ -70,16 +69,12 @@ class CitiesController extends Controller
         )]);
 
         Cities::create([
-            'country_id'      => $country
-                              ->id,
-            'city'            => $request
-                              ->input('city'),
-            'population'      => $request
-                              ->input('population'),
+            'country_id'      => $country->id,
+            'city'            => $request->input('add_city'),
+            'population'      => $request->input('add_population'),
         ]);
 
-        return redirect()->route('cities.index')
-                         ->with('success', __('Data Added Successfully') );
+        return redirect()->route('cities.index')->with('success', __('Data Added Successfully') );
     }
 
 
@@ -117,9 +112,9 @@ class CitiesController extends Controller
         'edit_country_name' => $populationModel->countries ? $populationModel
                             ->countries
                             ->name : null,
-        'city'              => $populationModel
+        'edit_city'         => $populationModel
                             ->city,
-        'population'        => $populationModel
+        'edit_population'   => $populationModel
                             ->population,
     ];
 
@@ -135,9 +130,9 @@ class CitiesController extends Controller
     {
         
         $rules = [
-            'edit_country_name'   => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
-            'city'                => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
-            'population'          => 'nullable|integer',
+            'edit_country_name'        => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'edit_city'                => 'required|string|min:1|regex:/^[a-zA-Z\s]+$/|max:100',
+            'edit_population'          => 'nullable|integer',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -155,14 +150,14 @@ class CitiesController extends Controller
 
         $updateData = [
             'country_id'    => $country->id,
-            'city'          => $request->input('city'),
-            'population'    => $request->input('population'),
+            'city'          => $request->input('edit_city'),
+            'population'    => $request->input('edit_population'),
         ];
 
         $populationModel->update($updateData);
 
-        return redirect()->route('cities.index')
-                         ->with('success', __('City Updated Successfully') );
+        return redirect()   ->route('cities.index')
+                            ->with('success', __('City Updated Successfully') );
     }
 
 
@@ -184,8 +179,7 @@ class CitiesController extends Controller
  
         $populationModel->delete();
  
-        return redirect()->route('cities.index')
-                         ->with('success', __('Cities Deleted Successfully') );
+        return redirect()->route('cities.index')->with('success', __('Cities Deleted Successfully') );
 
     }
 

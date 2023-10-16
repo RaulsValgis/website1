@@ -3,8 +3,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">{{ __('Edit Data') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" id="editmodal" onclick="closeEditModal()">X</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeEditModal()">
+                    <span aria-hidden="true">X</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -28,13 +28,13 @@
                     </div>
 
                 <div class="form-group">
-                    <label for="city">{{ __('city') }}</label>
-                    <input type="text" name="city" id="city" class="form-control" placeholder="{{ __('city') }}" autocomplete="address-level2">
+                    <label for="edit_city">{{ __('City') }}</label>
+                    <input type="text" name="edit_city" id="edit_city" class="form-control" placeholder="{{ __('City') }}" autocomplete="address-level2">
                 </div>
 
                 <div class="form-group">
-                    <label for="population">{{ __('population') }}</label>
-                    <input type="text" name="population" id="population" class="form-control" placeholder="{{ __('population') }}" autocomplete="address-level2">
+                    <label for="edit_population">{{ __('Population') }}</label>
+                    <input type="text" name="edit_population" id="edit_population" class="form-control" placeholder="{{ __('Population') }}" autocomplete="address-level2">
                 </div>
                 <div class="error-message text-danger"></div>
                 <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
