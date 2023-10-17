@@ -53,7 +53,7 @@
     </div>
 
 
-    <script>
+<script>
 
 
 
@@ -198,6 +198,11 @@
 
 
 
+
+
+
+
+
     async function findLocation() {
         const country           = document.getElementById('country').value;
         const city              = document.getElementById('city').value;
@@ -212,6 +217,7 @@
 
         let locationResponse    = await fetch(nominatimUrl);
         let locationData        = await locationResponse.json();
+
 
         if (locationData.length > 0) {
                 let lat = locationData[0].lat;

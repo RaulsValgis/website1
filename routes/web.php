@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Cities\CitiesController;
 use App\Http\Controllers\Map\MapController;
+use App\Http\Controllers\Currency\CurrencyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,7 +69,10 @@ Route::get('/find-location', [MapController::class, 'findLocation']);
 
 
 
-
+// Currency
+Route::resource('/currency', CurrencyController::class);
+Route::get('/currency-quotes', [CurrencyController::class, 'getTopCurrencyQuotes'])->name('currency-quotes.index');
+Route::get('/fetch-currency-data', [CurrencyController::class, 'fetchCurrencyData'])->name('fetch-currency-data.index');
 
 
 

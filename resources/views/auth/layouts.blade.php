@@ -27,6 +27,10 @@
     <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 
 
 
@@ -56,6 +60,7 @@ h1 {
             <a class="navbar-brand" href="{{ URL('/') }}">{{ __('Home') }}</a>
             <a class="navbar-brand" href="{{ route('cities.index') }}">{{ __('Cities') }}</a>
             <a class="navbar-brand" href="{{ route('map.index') }}">{{ __('Map') }}</a>
+            <a class="navbar-brand" href="{{ route('currency.index') }}">{{ __('Currency') }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
