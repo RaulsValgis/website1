@@ -43,6 +43,15 @@
     "Total Length":                 "Attālums Kopā",
     "A to B Length":                "No A Līdz B Attālums",
     "Total Area":                   "Kopējais laukums",
-    "Currency":                     "Valūta"
+    "Currency":                     "Valūta",
+    "Day":                          "Dienas",
+    "Week":                         "Nedēļas",
+    "Month":                        "Mēneša",
+    "Year":                         "Gada",
+    "Submit":                       "Iesniegt",
+    "Start Date:":                  "Sākuma Datums:",
+    "End Date:":                    "Beigu datums",
+    "Sort By Last:":                "Kārtot pēc pēdējās:",
+    "Time Period":                  "Laika Periods"    
 }
 
