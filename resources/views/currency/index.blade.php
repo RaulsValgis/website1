@@ -2,10 +2,17 @@
 
 @section('content')
 
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/interaction/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/interaction/main.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.9/index.global.min.js"></script> -->
+
+    
 
 <style>
+    
     #currency-chart-container {
         width: 100%; /* Adjust width as needed */
         margin: 0 auto; /* Center the chart container */
@@ -56,8 +63,12 @@
         <button type="button" class="btn btn-primary" onclick="FetchYear()" >{{ __('Year') }}</button>
         <br>
         <br>
-        <div id="calendar-info"></div>
-    </div>
+        <div class="calendar" id="calendar-info" >
+            <input type="text" id="calendar-text-start" readonly />
+            <input type="text" id="calendar-text-end" readonly />
+            <button type="button" class="btn btn-primary" onclick="FetchFrame()" >{{ __('Submit') }}</button>
+        </div>
+    </div>   
 </div>
 
 @include('partials.break')
@@ -69,18 +80,45 @@
     var endDate;
     var calendar;
     var calendarEl;
+    let selectingStartDate = false; 
+    
 
     document.addEventListener('DOMContentLoaded', function() {
         calendarEl = document.getElementById('calendar');
 
         calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            events: []
+            events: [],
+            selectable: true,
+            select: function(info) {
+                var selectedDate = info.start;
+                var formattedDate = selectedDate.toISOString().slice(0, 10);
+
+                if (selectingStartDate) {
+                    // If the selected date is after the current end date, 
+                    // reset the end date
+                    const endDateInput = document.getElementById("calendar-text-end");
+                    if (endDateInput.value && formattedDate > endDateInput.value) {
+                        endDateInput.value = '';
+                    }
+
+                    document.getElementById("calendar-text-start").value = formattedDate;
+                } else {
+                    const startDateValue = document.getElementById("calendar-text-start").value;
+                    if (startDateValue && formattedDate < startDateValue) {
+                        document.getElementById("calendar-text-start").value = formattedDate;
+                    } else {
+                        document.getElementById("calendar-text-end").value = formattedDate;
+                    }
+                }
+
+                // Toggle the flag
+                selectingStartDate = !selectingStartDate;
+            }
         });
 
         calendar.render();
         
-        // Call FetchYear after initializing the calendar
         FetchYear();
     });
 
@@ -89,6 +127,39 @@
 
 
 
+    function FetchFrame() {
+        startDate = document.getElementById("calendar-text-start").value;
+        endDate = document.getElementById("calendar-text-end").value;
+
+
+        var event = {
+            title: '',
+            start: startDate, 
+            end: endDate,
+            rendering: 'background', 
+            backgroundColor: 'lightblue' 
+        };
+
+        calendar.addEvent(event);
+
+        calendar.render();
+
+        calendar.getEvents().forEach(function(event) {
+            if (event.rendering === 'background') {
+                event.remove();
+            }
+        });
+
+        // Do something with the startDate and endDate values
+        // For example, you can log them to the console
+        console.log("Start Date: " + startDate);
+        console.log("End Date: " + endDate);
+
+
+        // You can also send this data to a server, process it, or perform any other action as needed.
+        fetchLineChartData(startDate, endDate);
+    }
+    
 
 
     
@@ -242,7 +313,33 @@
         calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             initialDate: startDate,
-            events: []
+            events: [],
+            selectable: true,  // You were missing this
+            select: function(info) {
+                var selectedDate = info.start;
+                var formattedDate = selectedDate.toISOString().slice(0, 10);
+
+                if (selectingStartDate) {
+                    // If the selected date is after the current end date, 
+                    // reset the end date
+                    const endDateInput = document.getElementById("calendar-text-end");
+                    if (endDateInput.value && formattedDate > endDateInput.value) {
+                        endDateInput.value = '';
+                    }
+
+                    document.getElementById("calendar-text-start").value = formattedDate;
+                } else {
+                    const startDateValue = document.getElementById("calendar-text-start").value;
+                    if (startDateValue && formattedDate < startDateValue) {
+                        document.getElementById("calendar-text-start").value = formattedDate;
+                    } else {
+                        document.getElementById("calendar-text-end").value = formattedDate;
+                    }
+                }
+
+                // Toggle the flag
+                selectingStartDate = !selectingStartDate;
+            }
         });
 
         calendar.render();
