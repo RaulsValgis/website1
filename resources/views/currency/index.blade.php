@@ -2,28 +2,22 @@
 
 @section('content')
 
-    <!-- <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/interaction/main.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/interaction/main.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.9/index.global.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 
     
 
 <style>
     
     #currency-chart-container {
-        width: 100%; /* Adjust width as needed */
-        margin: 0 auto; /* Center the chart container */
+        width: 100%; 
+        margin: 0 auto; 
     }
 
     #currency-line-chart-container {
-        width: 100%; /* Adjust width as needed */
-        margin: 0 auto; /* Center the chart container */
+        width: 100%; 
+        margin: 0 auto; 
     }
 
-    /* Ensure the canvas fills its parent container */
     canvas {
         width: 90%;
         height: 90%;
@@ -80,10 +74,13 @@
     var endDate;
     var calendar;
     var calendarEl;
-    let selectingStartDate = false; 
+    let selectingStartDate = true; 
+    var backgroundEvent = null;
+    var formattedDate;
     
 
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM Content Loaded');  
         calendarEl = document.getElementById('calendar');
 
         calendar = new FullCalendar.Calendar(calendarEl, {
@@ -92,16 +89,16 @@
             selectable: true,
             select: function(info) {
                 var selectedDate = info.start;
-                var formattedDate = selectedDate.toISOString().slice(0, 10);
+
+                
+
+                formattedDate = formatLocalDate(selectedDate);
 
                 if (selectingStartDate) {
-                    // If the selected date is after the current end date, 
-                    // reset the end date
                     const endDateInput = document.getElementById("calendar-text-end");
                     if (endDateInput.value && formattedDate > endDateInput.value) {
                         endDateInput.value = '';
                     }
-
                     document.getElementById("calendar-text-start").value = formattedDate;
                 } else {
                     const startDateValue = document.getElementById("calendar-text-start").value;
@@ -111,8 +108,6 @@
                         document.getElementById("calendar-text-end").value = formattedDate;
                     }
                 }
-
-                // Toggle the flag
                 selectingStartDate = !selectingStartDate;
             }
         });
@@ -131,32 +126,34 @@
         startDate = document.getElementById("calendar-text-start").value;
         endDate = document.getElementById("calendar-text-end").value;
 
+        var endDateObj = new Date(endDate);
+        endDateObj.setDate(endDateObj.getDate());
+        endDate = endDateObj.toISOString().slice(0, 10);
+
+        
+
+        if (backgroundEvent !== null ) {
+            backgroundEvent.remove();
+        }
+
 
         var event = {
-            title: '',
+            //title: '',
             start: startDate, 
-            end: endDate,
-            rendering: 'background', 
+            end: endDate ,
+            display: 'background', 
             backgroundColor: 'lightblue' 
         };
 
-        calendar.addEvent(event);
+        //calendar.addEvent(event);
+
+        backgroundEvent = calendar.addEvent(event);
 
         calendar.render();
 
-        calendar.getEvents().forEach(function(event) {
-            if (event.rendering === 'background') {
-                event.remove();
-            }
-        });
-
-        // Do something with the startDate and endDate values
-        // For example, you can log them to the console
         console.log("Start Date: " + startDate);
         console.log("End Date: " + endDate);
 
-
-        // You can also send this data to a server, process it, or perform any other action as needed.
         fetchLineChartData(startDate, endDate);
     }
     
@@ -186,7 +183,7 @@
 
     function FetchDay() {
         var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setDate(yesterday.getDate() );
         var yyyy = yesterday.getFullYear();
         var mm = String(yesterday.getMonth() + 1).padStart(2, '0');
         var dd = String(yesterday.getDate()).padStart(2, '0');
@@ -196,10 +193,9 @@
 
         calendar.destroy();
 
-        // Reinitialize the calendar with the new dates
         calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridDay', // Set the view to dayGridDay
-            defaultDate: startDate, // Set the default date to the selected day
+            initialView: 'dayGridDay', 
+            defaultDate: startDate, 
             events: []
         });
 
@@ -213,10 +209,10 @@
 
     function FetchWeek() {
         var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1); // Set yesterday as the end date
+        yesterday.setDate(yesterday.getDate() ); 
 
         var startDate = new Date(yesterday);
-        startDate.setDate(startDate.getDate() - 6); // Calculate the start date as 6 days before yesterday
+        startDate.setDate(startDate.getDate() - 6); 
 
         var yyyyStart = startDate.getFullYear();
         var mmStart = String(startDate.getMonth() + 1).padStart(2, '0');
@@ -231,16 +227,14 @@
 
         calendar.destroy();
 
-        // Reinitialize the calendar with the new dates
         calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth', // Set the view to timeGridWeek for one week
-            initialDate: startDate, // Set the initial date to the start of the week
+            initialView: 'dayGridMonth', 
+            initialDate: startDate, 
             events: []
         });
 
         calendar.render();
 
-        // Fetch chart data for the week by passing the startDate and endDate as arguments
         fetchLineChartData(startDate, endDate);
     }
 
@@ -252,7 +246,7 @@
 
     function FetchMonth() {
         var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setDate(yesterday.getDate());
 
         var startDate = new Date(yesterday);
         startDate.setDate(startDate.getDate() - 30);
@@ -292,7 +286,7 @@
     
     function FetchYear() {
         var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1); 
+        yesterday.setDate(yesterday.getDate()); 
 
         var startDate = new Date(yesterday);
         startDate.setDate(startDate.getDate() - 365); 
@@ -314,19 +308,17 @@
             initialView: 'dayGridMonth',
             initialDate: startDate,
             events: [],
-            selectable: true,  // You were missing this
+            selectable: true,  
             select: function(info) {
                 var selectedDate = info.start;
-                var formattedDate = selectedDate.toISOString().slice(0, 10);
+
+                formattedDate = formatLocalDate(selectedDate);
 
                 if (selectingStartDate) {
-                    // If the selected date is after the current end date, 
-                    // reset the end date
                     const endDateInput = document.getElementById("calendar-text-end");
                     if (endDateInput.value && formattedDate > endDateInput.value) {
                         endDateInput.value = '';
                     }
-
                     document.getElementById("calendar-text-start").value = formattedDate;
                 } else {
                     const startDateValue = document.getElementById("calendar-text-start").value;
@@ -336,15 +328,12 @@
                         document.getElementById("calendar-text-end").value = formattedDate;
                     }
                 }
-
-                // Toggle the flag
                 selectingStartDate = !selectingStartDate;
             }
         });
 
         calendar.render();
 
-        // Fetch chart data for the week by passing the startDate and endDate as arguments
         fetchLineChartData(startDate, endDate);
     }
 
@@ -487,30 +476,26 @@
         };
 
         try {
-            // Destroy the existing line chart if it exists
             if (lineChart) {
                 lineChart.destroy();
             }
             const lineChartResponse = await fetch(conversionUrl, conversionOptions);
-            const lineChartResult = await lineChartResponse.json();
+            const lineChartResult   = await lineChartResponse.json();
 
             if (lineChartResult.rates) {
-                // Convert rates data to an array of objects
                 const originalData = Object.entries(lineChartResult.rates).map(([date, rates]) => ({
                     date,
                     value: rates.USD 
                 }));
 
-                // Create a sorted copy of the data
                 const data = [...originalData];
                 data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-                const dates = data.map(item => item.date);
-                const values = data.map(item => item.value);
+                const dates     = data.map(item => item.date);
+                const values    = data.map(item => item.value);
 
                 const lineChartCtx = document.getElementById('currency-line-chart').getContext('2d');
 
-                // Use the existing lineChart variable (not redefined)
                 lineChart = new Chart(lineChartCtx, {
                     type: 'line',
                     data: {
@@ -573,6 +558,14 @@ fetchLineChartData(startDate, endDate);
 
 
 
+
+    function formatLocalDate(date) {
+        var day = ("0" + date.getDate()).slice(-2);
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var year = date.getFullYear();
+
+        return year + "-" + month + "-" + day;
+    }
 
 
 
