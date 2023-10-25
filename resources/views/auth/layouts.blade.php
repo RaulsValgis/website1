@@ -61,6 +61,7 @@ h1 {
             <a class="navbar-brand" href="{{ route('cities.index') }}">{{ __('Cities') }}</a>
             <a class="navbar-brand" href="{{ route('map.index') }}">{{ __('Map') }}</a>
             <a class="navbar-brand" href="{{ route('currency.index') }}">{{ __('Currency') }}</a>
+            <a class="navbar-brand" href="{{ route('weather.index') }}">{{ __('Weather') }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

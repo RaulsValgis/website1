@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Cities\CitiesController;
 use App\Http\Controllers\Map\MapController;
 use App\Http\Controllers\Currency\CurrencyController;
+use App\Http\Controllers\Weather\WeatherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,14 @@ Route::get('/find-location', [MapController::class, 'findLocation']);
 Route::resource('/currency', CurrencyController::class);
 Route::get('/currency-quotes', [CurrencyController::class, 'getTopCurrencyQuotes'])->name('currency-quotes.index');
 Route::get('/fetch-currency-data', [CurrencyController::class, 'fetchCurrencyData'])->name('fetch-currency-data.index');
+
+
+
+
+
+// Weather
+Route::resource('/weather', WeatherController::class);
+
 
 
 

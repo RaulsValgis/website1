@@ -52,6 +52,23 @@
     "Start Date:":                  "Sākuma Datums:",
     "End Date:":                    "Beigu datums",
     "Sort By Last:":                "Kārtot pēc pēdējās:",
-    "Time Period":                  "Laika Periods"    
+    "Time Period":                  "Laika Periods",
+    "Weather":                      "Laikapstākļi",
+    "Todays Forecast":              "Šodienas Prognoze",
+    "5-Day Forecast":               "5-Dienu Prognoze",
+    "Date":                         "Datums",
+    "Temperature":                  "Temperatūra",
+    "Tuesday":                      "Otrdiena",
+    "Wednesday":                    "Trešdiena",
+    "Thursday":                     "Ceturtdiena",
+    "Friday":                       "Piektdiena",
+    "Saturday":                     "Sestdiena",
+    "Sunday":                       "Svētdiena",
+    "Monday":                       "Pirmdiena",
+    "light rain":                   "viegls lietus",
+    "overcast clouds":              "apmācies",
+    "Oct":                          "Okt",
+    "Temperature (°C)":             "Temperatūra (°C)",
+    "light snow":                   "minimāls sniegs"
 }
 
