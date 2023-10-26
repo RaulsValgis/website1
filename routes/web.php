@@ -6,8 +6,6 @@ use App\Http\Controllers\Cities\CitiesController;
 use App\Http\Controllers\Map\MapController;
 use App\Http\Controllers\Currency\CurrencyController;
 use App\Http\Controllers\Weather\WeatherController;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\SenderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,23 +27,17 @@ Route::get('/', function () {
 
 
 // login/register
-Route::middleware(['web'])->group(function () {
+// Route::middleware(['web'])->group(function () {
     Route::get('/register', [LoginRegisterController::class, 'register'])->name('register');
     Route::post('/store', [LoginRegisterController::class, 'store'])->name('store');
     Route::get('/login', [LoginRegisterController::class, 'login'])->name('login');
     Route::post('/authenticate', [LoginRegisterController::class, 'authenticate'])->name('authenticate');
     Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
-    Route::post('/generate-token', [SenderController::class, 'generateToken'])->name('generatetoken');
-    Route::post('/send-request', [SenderController::class, 'sendRequestToReceiver'])->name('sendrequest');
 
-});
-
-// Route::middleware(['api', 'auth:api'])->group(function () {
-//     Route::get('/api/your-protected-endpoint-1', [AuthController::class, 'handleEndpoint1']);
-//     Route::post('/api/your-protected-endpoint-2', [AuthController::class, 'handleEndpoint2']);
 
 // });
+
 
 
 

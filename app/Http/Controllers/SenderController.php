@@ -20,14 +20,17 @@ class SenderController extends Controller
 
     public function sendRequestToReceiver(Request $request)
     {
-        $token = $request->input('token'); // Assuming 'token' is the key for the token in your request
-        $dataToSend = $request->input('dataToSend'); // Assuming 'dataToSend' is the key for the dataToSend in your request
+        $request->validate([
+            'token' => 'required',
+            'dataToSend' => 'required',
+        ]);
 
-        // Your existing code for sending the request
+        $token = $request->input('token');
+        $dataToSend = $request->input('dataToSend');
+
         $response = Http::withHeaders(['Authorization' => 'Bearer ' . $token])
-            ->post('http://127.0.0.1:8001/api/resource', $dataToSend);
+            ->post('http://127.0.0.1:8001/api/receive-data', $dataToSend);
 
-        // Process the response as needed
         return $response;
     }
 
