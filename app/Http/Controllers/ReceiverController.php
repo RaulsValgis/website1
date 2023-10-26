@@ -20,7 +20,7 @@ class ReceiverController extends Controller
     public function receiveData(Request $request)
     {
         $receivedData = $request->all();
-        \Log::info('Received data:', $receivedData);
+        \Log::info('Received data:', ['receivedData' => $receivedData]);
         dd($receivedData);
         
 

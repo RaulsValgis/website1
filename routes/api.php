@@ -24,14 +24,14 @@ Route::get('/send-data', function () {
         "role"=> "guest"
     ];
 
-    $response = Http::post('http://127.0.0.1:8001/api/receive-data', $data);
+    $response = Http::withHeaders(['Content-Type' => 'application/json'])->post('http://127.0.0.1:8001/api/receive-data', $data);
 
     return $response->body();
 });
 
-Route::post('/receive-data', function (Request $request) {
-    $receivedData = $request->all();
-    dd('r', $receivedData);
+Route::match(['get', 'post'], '/receive-data', function (Request $request) {
+    $receivedData = json_decode($request->getContent(), true);
+    //dd('r', $receivedData);
 
     
     return response()->json(['message' => 'Data received successfully', 'receivedData' => $receivedData]);
