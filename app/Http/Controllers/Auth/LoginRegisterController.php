@@ -50,6 +50,7 @@ class LoginRegisterController extends Controller
             'password'  => Hash::make($request->password)
         ]);
 
+
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
@@ -86,7 +87,7 @@ class LoginRegisterController extends Controller
             return redirect()->route('dashboard')
                 ->withSuccess('You have successfully logged in!');
         }
-
+        
         return back()->withErrors([
             'email' => 'Your provided credentials do not match in our records.',
         ])->onlyInput('email');

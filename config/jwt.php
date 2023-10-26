@@ -46,32 +46,13 @@ return [
 
     'keys' => [
 
-        /*
-        |--------------------------------------------------------------------------
-        | Public Key
-        |--------------------------------------------------------------------------
-        |
-        | A path or resource to your public key.
-        |
-        | E.g. 'file://path/to/public/key'
-        |
-        */
+        // Sender keys
+        'public' => env('JWT_SENDER_PUBLIC_KEY'),
+        'private' => env('JWT_SENDER_PRIVATE_KEY'),
 
-        'public' => env('JWT_PUBLIC_KEY'),
-
-        /*
-        |--------------------------------------------------------------------------
-        | Private Key
-        |--------------------------------------------------------------------------
-        |
-        | A path or resource to your private key.
-        |
-        | E.g. 'file://path/to/private/key'
-        |
-        */
-
-        'private' => env('JWT_PRIVATE_KEY'),
-
+        // Receiver keys
+        'receiver_public' => env('JWT_RECEIVER_PUBLIC_KEY'),
+        'receiver_private' => env('JWT_RECEIVER_PRIVATE_KEY'),
         /*
         |--------------------------------------------------------------------------
         | Passphrase

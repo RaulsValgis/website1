@@ -8,12 +8,17 @@ use Illuminate\Support\Facades\Http;
 
 
 
-Route::middleware(['api'])->group(function () {
+// Route::middleware(['api'])->group(function () {
+//     Route::post('/send-data', [ReceiverController::class, 'processData'])->name('send-data');
+//     Route::post('/send-request', [SenderController::class, 'sendRequestToReceiver'])->name('send-request');
+//     Route::post('/receive-data', [ReceiverController::class, 'receiveData'])->name('receive-data');
+// });
+
+Route::middleware(['jwt.verify'])->group(function() {
     Route::post('/send-data', [ReceiverController::class, 'processData'])->name('send-data');
     Route::post('/send-request', [SenderController::class, 'sendRequestToReceiver'])->name('send-request');
-    Route::post('/receive-data', [ReceiverController::class, 'receiveData'])->name('receive-data');
+    //Route::post('/receive-data', [ReceiverController::class, 'receiveData'])->name('receive-data');
 });
-
 
 Route::get('/send-data', function () {
     $data = [
@@ -25,7 +30,9 @@ Route::get('/send-data', function () {
     ];
 
     $response = Http::withHeaders(['Content-Type' => 'application/json'])->post('http://127.0.0.1:8001/api/receive-data', $data);
-
+    //dd($response);
+    //dd($data);
+    
     return $response->body();
 });
 
