@@ -4,21 +4,30 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Firebase\JWT\JWT;
+use stdClass;
 
 class JwtVerify
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle($request, Closure $next)
     {
         $apiToken = $request->bearerToken();
+        
+        if (!$apiToken) {
+            return response('Unauthorized', 401);
+        }
 
-        if ($apiToken !== '7sin0CMV31dvW7zWP03lOnRWPFOjSMM2plvfdtvZb2oA9URr8Vuuym9UD3msdkb7') {
+        $allowedAlgorithms = new stdClass();
+        $allowedAlgorithms->alg = 'HS256';
+
+        $key = config('jwt.keys.shared_secret_key');
+
+        
+        try {
+            
+
+            $decoded = JWT::decode($apiToken, $key, $allowedAlgorithms);
+        } catch (\Exception $e) {
             return response('Unauthorized', 401);
         }
 

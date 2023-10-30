@@ -53,6 +53,8 @@ return [
         // Receiver keys
         'receiver_public' => env('JWT_RECEIVER_PUBLIC_KEY'),
         'receiver_private' => env('JWT_RECEIVER_PRIVATE_KEY'),
+
+        'shared_secret_key' => env('JWT_SHARED_SECRET_KEY', '2f94eb3a22b0e6d5f9e6f8b39675dd78'),
         /*
         |--------------------------------------------------------------------------
         | Passphrase
